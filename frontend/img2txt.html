@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas Fiscais Processadas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    .container { max-width: 900px; margin: auto; padding-top: 2rem; }
+    .loading { opacity: 0.6; pointer-events: none; }
+    .error { color: #d9534f; }
+    canvas { display: none; }
+    video { width: 100%; max-height: 300px; }
+    #preview img { max-width: 100%; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>📄 Enviar Nota Fiscal</h1>
+    <div ><a href="/perfil">👤 Perfil</a></div>
+    
+    <form id="upload-form">
+      <label for="modo">Escolha o modo:</label>
+      <select id="modo">
+        <option value="upload">Upload de Arquivo</option>
+        <option value="camera">Usar Câmera</option>
+      </select>
+
+      <div id="upload-area">
+        <label for="nota-fiscal">Escolher arquivo:</label>
+        <input type="file" id="nota-fiscal" accept="image/*" onchange="previewFoto(this)" />
+      </div>
+
+      <div id="camera-area" style="display: none;">
+        <video id="video" autoplay playsinline></video>
+        <button type="button" id="capture">📸 Capturar Foto</button>
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div id="preview"></div>
+      <button id="btn-enviar"  type="submit">📨 Enviar Nota</button>
+      <div id="feedback" class="feedback-area"></div>
+      <audio id="flow-sound" src="/sounds/flow.mp3" preload="auto"></audio>
+    </form>
+
+    <hr>
+
+    <h2>📋 Notas Processadas</h2>
+    <button id="btn-carregar">🔄 Ver Notas Processadas</button>
+    <button id="btn-deletar" class="secondary" style="background-color: #d9534f; color: white;">🗑 Limpar Notas</button>
+
+    <div id="notas-container"></div>
+  </main>
+
+  <script src="/img2txt.js"></script>
+
+</body>
+</html>
+

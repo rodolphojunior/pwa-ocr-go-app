@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Usuário</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    .container { max-width: 700px; margin: auto; padding-top: 2rem; }
+    form > * + * { margin-top: 1rem; }
+    .api-entry { display: flex; gap: 1rem; align-items: center; }
+    .api-entry input[type="text"] { flex: 1; }
+    .api-entry button { background-color: #d9534f; color: white; }
+  </style>
+</head>
+<body>
+<main class="container">
+  <h1>👤 Perfil do Usuário</h1>
+  <p id="status">🔄 Carregando...</p>
+
+  <section>
+    <h2>🔐 Trocar Senha</h2>
+    <form id="senha-form">
+      <input type="password" id="senha-atual" placeholder="Senha atual" required>
+      <input type="password" id="nova-senha" placeholder="Nova senha" required>
+      <input type="password" id="confirmar-senha" placeholder="Confirmar nova senha" required>
+      <button type="submit">Atualizar Senha</button>
+    </form>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>🌐 Chaves de API</h2>
+    <form id="nova-chave-form">
+      <input type="text" id="nome-chave" placeholder="Nome da chave (ex: OpenAI 4)" required>
+      <input type="text" id="valor-chave" placeholder="Cole aqui sua API Key" required>
+      <button type="submit">Adicionar Chave</button>
+    </form>
+
+    <div id="lista-chaves"></div>
+  </section>
+</main>
+
+<script src="/perfil.js"></script>
+
+</body>
+</html>
+

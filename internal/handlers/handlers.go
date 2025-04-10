@@ -1,5 +1,5 @@
-// internal/http/handler.go
-package http
+package handlers
+
 import (
 	"encoding/json"
 	"fmt"
@@ -13,6 +13,7 @@ import (
 	"pwaocr/internal/ocr"
 	"pwaocr/internal/ai"
 	"pwaocr/internal/db"
+    "pwaocr/internal/db/models"
 )
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
@@ -75,4 +76,26 @@ func salvarImagem(file multipart.File, handler *multipart.FileHeader) (string, e
 
 	return path, nil
 }
+
+func ListarNotasHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	notas := []models.NotaFiscal{}
+	db.Conn.Preload("Itens").Find(&notas)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(notas)
+}
+
+func DeleteNotasHandler(w http.ResponseWriter, r *http.Request) {
+	db.Conn.Exec("DELETE FROM item_nota_fiscals") // Nome real da tabela dos itens
+	db.Conn.Exec("DELETE FROM nota_fiscals")      // Nome real da tabela das notas
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"Notas apagadas com sucesso"}`))
+}
+
+
 

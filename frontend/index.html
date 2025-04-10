@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA OCR de Notas Fiscais</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0f4a73">
+  <style>
+    /* Adições no CSS */
+      .container { max-width: 500px; margin: auto; padding-top: 2rem; }
+      .hidden { display: none; }
+      /* Novas classes */
+      .loading { opacity: 0.6; pointer-events: none; }
+      .error { color: #d9534f; }
+      .success { color: #5cb85c; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1 id="title">Login</h1>
+
+    <form id="login-form">
+      <label>Email:
+        <input type="email" name="email" required>
+      </label>
+      <label>Senha:
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Entrar</button>
+      <p><small>Ainda não tem conta? <a href="#" id="show-register">Registre-se</a></small></p>
+    </form>
+
+    <form id="register-form" class="hidden">
+      <label>Nome:
+        <input type="text" name="name" required>
+      </label>
+      <label>Email:
+        <input type="email" name="email" required>
+      </label>
+      <label>Senha:
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Registrar</button>
+      <p><small>Já tem conta? <a href="#" id="show-login">Fazer login</a></small></p>
+    </form>
+
+    <div id="status"></div>
+    <div id="logout-box" class="hidden">
+      <p id="welcome-msg"></p>
+      <button id="logout-btn" class="contrast">Sair</button>
+    </div>
+  </main>
+
+    <script src="/index.js"></script>
+
+</body>
+</html>
+

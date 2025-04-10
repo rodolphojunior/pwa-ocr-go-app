@@ -1,0 +1,34 @@
+Em 8 de abril de 2025
+
+Chegamos no MVP do app pwa-ocr-go-app
+
+Fizemos um trabalho incrível — com arquitetura modular, OCR, IA, autenticação com JWT, segurança, feedback visual e sonoro, e tudo isso integrado em um PWA que roda tanto em desktop quanto em smartphone. Temos sim um MVP de respeito! 🚀 
+
+Os próximos passos serão:
+
+    Melhorar a acurácia da interpretação pós-ocr modificando o prompt
+para reconhecer Quantidade, Preço Unitário e Total como somente combinação de algarismos "0 1 2 3 4 5 6 7 8 9 , ."
+
+    Togle para o feedback sonoro/sem som
+
+    Seletor de IA
+
+    Dockerizar o app
+
+    Mudar o db para PostgreSQL
+
+    Enviar para a nuvem, Google, por exemplo!
+
+Também no horizonte de alterações:
+
+    Painel administrativo para revisar/gerenciar as notas
+
+    Logs com Zap ou Logrus
+
+    Imagens em Cloud Storage (ex: Firebase ou S3)
+
+    Reprocessamento de nota com IA diferente
+
+    Histórico de usuários e análises de uso
+
+

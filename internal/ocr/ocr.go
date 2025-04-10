@@ -1,4 +1,3 @@
-// internal/ocr/ocr.go
 package ocr
 
 import (

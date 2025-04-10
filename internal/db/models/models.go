@@ -1,25 +1,24 @@
-// internal/db/models/models.go
 package models
 
 import "gorm.io/gorm"
 
 type NotaFiscal struct {
 	gorm.Model
-	Empresa     string
-	CNPJ        string
-	Endereco    string
-	DataEmissao string
-	ValorTotal  float64
-	Itens       []ItemNotaFiscal `gorm:"foreignKey:NotaID"`
+	Empresa     string            `json:"empresa"`
+	CNPJ        string            `json:"cnpj"`
+	Endereco    string            `json:"endereco"`
+	DataEmissao string            `json:"data_emissao"`
+	ValorTotal  float64           `json:"valor_total"`
+    Itens []ItemNotaFiscal `gorm:"foreignKey:NotaID" json:"itens"`
 }
 
 type ItemNotaFiscal struct {
 	gorm.Model
-	NotaID       uint
-	Descricao    string
-	Quantidade   int
-	ValorUnitario float64
-	ValorTotal   float64
+	NotaID          uint    `json:"nota_id"`
+	Descricao       string  `json:"descricao"`
+	Quantidade      int     `json:"quantidade"`
+	ValorUnitario   float64 `json:"valor_unitario"`
+	ValorTotal      float64 `json:"valor_total"`
 }
 
 type Item struct {

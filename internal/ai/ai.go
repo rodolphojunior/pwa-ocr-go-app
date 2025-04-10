@@ -1,4 +1,3 @@
-// internal/ai/ai.go
 package ai
 
 import (
@@ -7,17 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+    "strings"
 	"os"
-    "pwaocr/internal/db/models"
+
+	"pwaocr/internal/db/models"
 )
-
-type Item struct {
-	Descricao     string  `json:"descricao"`
-	Quantidade    int     `json:"quantidade"`
-	ValorUnitario float64 `json:"valor_unitario"`
-	ValorTotal    float64 `json:"valor_total"`
-}
-
 
 func ExtrairCampos(texto string) (*models.NotaFiscalDados, error) {
 	apiKey := os.Getenv("OPENAI_API_KEY")
@@ -25,7 +18,13 @@ func ExtrairCampos(texto string) (*models.NotaFiscalDados, error) {
 		return nil, fmt.Errorf("variável de ambiente OPENAI_API_KEY não definida")
 	}
 
-	prompt := fmt.Sprintf(`Você é um extrator de dados de notas fiscais brasileiras. Receberá o texto OCR de uma nota fiscal e deve retornar os seguintes campos em JSON: 'empresa', 'cnpj', 'endereco', 'data_emissao', 'itens' (com 'descricao', 'quantidade', 'valor_unitario' e 'valor_total'), e 'valor_total'. Texto OCR: %s`, texto)
+	// Lê o prompt de um arquivo externo
+	rawPrompt, err := os.ReadFile("prompt.txt")
+	if err != nil {
+		return nil, fmt.Errorf("erro ao ler prompt.txt: %v", err)
+	}
+
+	prompt := fmt.Sprintf(string(rawPrompt), texto)
 
 	payload := map[string]interface{}{
 		"model": "gpt-4",
@@ -47,6 +46,7 @@ func ExtrairCampos(texto string) (*models.NotaFiscalDados, error) {
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("Resposta bruta da IA:", string(body))
 
 	var result struct {
 		Choices []struct {
@@ -55,17 +55,22 @@ func ExtrairCampos(texto string) (*models.NotaFiscalDados, error) {
 			} `json:"message"`
 		} `json:"choices"`
 	}
-
-    fmt.Println("Resposta bruta da IA:", string(body))
-
 	json.Unmarshal(body, &result)
 
 	if len(result.Choices) == 0 {
 		return nil, fmt.Errorf("IA não retornou nenhuma resposta")
 	}
 
-    var dados models.NotaFiscalDados
-    err = json.Unmarshal([]byte(result.Choices[0].Message.Content), &dados)
+	var dados models.NotaFiscalDados
+	rawContent := strings.TrimSpace(result.Choices[0].Message.Content)
+
+	if strings.HasPrefix(rawContent, "```json") {
+		rawContent = strings.TrimPrefix(rawContent, "```json")
+		rawContent = strings.TrimSuffix(rawContent, "```")
+		rawContent = strings.TrimSpace(rawContent)
+	}
+
+	err = json.Unmarshal([]byte(rawContent), &dados)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao decodificar JSON da IA: %v", err)
 	}

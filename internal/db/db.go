@@ -1,4 +1,3 @@
-// internal/db/db.go
 package db
 
 import (
@@ -8,6 +7,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"pwaocr/internal/db/models"
+    "pwaocr/internal/auth"
 )
 
 var Conn *gorm.DB
@@ -24,8 +24,16 @@ func Connect() {
 	}
 	Conn = db
 
-	db.AutoMigrate(&models.NotaFiscal{}, &models.ItemNotaFiscal{})
+
 	log.Println("Banco de dados conectado e migrado.")
+}
+
+func RunMigrations() {
+	Conn.AutoMigrate(
+		&auth.User{},
+		&models.NotaFiscal{},
+		&models.ItemNotaFiscal{},
+	)
 }
 
 func SalvarNotaFiscal(dados *models.NotaFiscalDados) error {
